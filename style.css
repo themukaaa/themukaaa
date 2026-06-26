@@ -206,12 +206,12 @@ body {
 }
 
 .sticker-item[data-modal]:hover .sticker-img {
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.6));
   transform: scale(1.07) translateY(-4px);
 }
 
 .sticker-item.no-modal:hover .sticker-img {
-  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6));
+  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.6));
   transform: scale(1.04) translateY(-2px);
 }
 
@@ -240,7 +240,7 @@ body {
 }
 
 .sticker-link:hover .sticker-img {
-  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5)) drop-shadow(0 6px 14px rgba(0, 0, 0, 0.7));
+  filter: drop-shadow(0 5px 12px rgba(0, 0, 0, 0.6));
   transform: scale(1.07) translateY(-4px);
 }
 
@@ -492,4 +492,11 @@ body {
   color: rgba(255, 255, 255, 0.85);
   margin-top: 40px;
   margin-bottom: 14px;
+}
+
+.legal-updated {
+  font-family: 'Swanky and Moo Moo', cursive;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.3);
+  margin-top: 48px;
 }
