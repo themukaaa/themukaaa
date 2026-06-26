@@ -1,66 +1,98 @@
-/* ═══════════════════════════════════════
-   THEMUKAAA.COM — Main Script
-   ═══════════════════════════════════════ */
+/* THEMUKAAA.COM - Script v3 */
 
-/* ─── ANIMATED WAVE BACKGROUND ─── */
+/* TOPOGRAPHIC LINE BACKGROUND - sparse lines on black */
 (function () {
   const canvas = document.getElementById('bgCanvas');
   const ctx = canvas.getContext('2d');
-
   let W, H, t = 0;
-
-  const COLORS = [
-    { r: 232, g: 36,  b: 26  }, // red
-    { r: 26,  g: 76,  b: 232 }, // blue
-    { r: 245, g: 200, b: 0   }, // yellow
-    { r: 46,  g: 204, b: 64  }, // green
-    { r: 180, g: 0,   b: 200 }, // purple accent
-    { r: 0,   g: 200, b: 200 }, // cyan accent
-  ];
 
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
   }
 
-  function lerp(a, b, n) { return a + (b - a) * n; }
-
-  function noise(x, y, t) {
+  function field(x, y, t) {
     return (
-      Math.sin(x * 0.008 + t * 0.4) *
-      Math.cos(y * 0.010 - t * 0.3) +
-      Math.sin(x * 0.015 - y * 0.008 + t * 0.5) * 0.5 +
-      Math.cos(x * 0.005 + y * 0.012 + t * 0.2) * 0.5
+      Math.sin(x * 0.005 + t * 0.3) *
+      Math.cos(y * 0.007 - t * 0.2) +
+      Math.sin(x * 0.010 - y * 0.006 + t * 0.4) * 0.6 +
+      Math.cos(x * 0.003 + y * 0.009 + t * 0.15) * 0.4
     );
   }
 
+  /* Only a few iso levels = sparse lines */
+  const LEVELS = [-0.6, -0.1, 0.4, 0.9];
+
+  const LINE_COLORS = [
+    '#E8241A',
+    '#1A4CE8',
+    '#F5C800',
+    '#2ECC40',
+  ];
+
+  const STEP = 10;
+
   function draw() {
-    ctx.clearRect(0, 0, W, H);
+    /* Black background each frame */
+    ctx.fillStyle = '#080808';
+    ctx.fillRect(0, 0, W, H);
 
-    const STEP = 6; // pixel grid size — smaller = smoother but slower
-    for (let y = 0; y < H; y += STEP) {
-      for (let x = 0; x < W; x += STEP) {
-        const n = noise(x, y, t);            // -2 to +2 roughly
-        const norm = (n + 2) / 4;            // 0 to 1
+    const cols = Math.ceil(W / STEP) + 1;
+    const rows = Math.ceil(H / STEP) + 1;
+    const grid = [];
 
-        // pick two adjacent colors to blend
-        const idx1 = Math.floor(norm * (COLORS.length - 1));
-        const idx2 = Math.min(idx1 + 1, COLORS.length - 1);
-        const frac = (norm * (COLORS.length - 1)) - idx1;
-
-        const c1 = COLORS[idx1];
-        const c2 = COLORS[idx2];
-
-        const r = Math.round(lerp(c1.r, c2.r, frac));
-        const g = Math.round(lerp(c1.g, c2.g, frac));
-        const b = Math.round(lerp(c1.b, c2.b, frac));
-
-        ctx.fillStyle = `rgb(${r},${g},${b})`;
-        ctx.fillRect(x, y, STEP, STEP);
+    for (let r = 0; r < rows; r++) {
+      grid[r] = [];
+      for (let c = 0; c < cols; c++) {
+        grid[r][c] = field(c * STEP, r * STEP, t);
       }
     }
 
-    t += 0.008; // speed of animation — increase for faster morph
+    LEVELS.forEach((level, li) => {
+      ctx.beginPath();
+      ctx.strokeStyle = LINE_COLORS[li % LINE_COLORS.length];
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.85;
+
+      for (let r = 0; r < rows - 1; r++) {
+        for (let c = 0; c < cols - 1; c++) {
+          const x = c * STEP;
+          const y = r * STEP;
+          const v00 = grid[r][c];
+          const v10 = grid[r][c + 1];
+          const v01 = grid[r + 1][c];
+          const v11 = grid[r + 1][c + 1];
+
+          const pts = [];
+
+          if ((v00 < level) !== (v10 < level)) {
+            const f = (level - v00) / (v10 - v00);
+            pts.push([x + f * STEP, y]);
+          }
+          if ((v10 < level) !== (v11 < level)) {
+            const f = (level - v10) / (v11 - v10);
+            pts.push([x + STEP, y + f * STEP]);
+          }
+          if ((v01 < level) !== (v11 < level)) {
+            const f = (level - v01) / (v11 - v01);
+            pts.push([x + f * STEP, y + STEP]);
+          }
+          if ((v00 < level) !== (v01 < level)) {
+            const f = (level - v00) / (v01 - v00);
+            pts.push([x, y + f * STEP]);
+          }
+
+          if (pts.length === 2) {
+            ctx.moveTo(pts[0][0], pts[0][1]);
+            ctx.lineTo(pts[1][0], pts[1][1]);
+          }
+        }
+      }
+      ctx.stroke();
+    });
+
+    ctx.globalAlpha = 1;
+    t += 0.004;
     requestAnimationFrame(draw);
   }
 
@@ -70,7 +102,7 @@
 })();
 
 
-/* ─── MODAL SYSTEM ─── */
+/* MODAL SYSTEM */
 const overlay = document.getElementById('modalOverlay');
 
 function openModal(id) {
@@ -87,28 +119,22 @@ function closeAllModals() {
   document.body.style.overflow = '';
 }
 
-// Open on sticker click
 document.querySelectorAll('.sticker-item[data-modal]').forEach(item => {
-  item.addEventListener('click', () => {
-    openModal(item.dataset.modal);
-  });
+  item.addEventListener('click', () => openModal(item.dataset.modal));
 });
 
-// Close on X button
 document.querySelectorAll('.modal-close').forEach(btn => {
   btn.addEventListener('click', closeAllModals);
 });
 
-// Close on overlay click
 overlay.addEventListener('click', closeAllModals);
 
-// Close on Escape key
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') closeAllModals();
 });
 
 
-/* ─── STAGGER STICKER ENTRANCE ON SCROLL ─── */
+/* STICKER ENTRANCE */
 const stickers = document.querySelectorAll('.sticker-item');
 
 const stickerObserver = new IntersectionObserver((entries) => {
@@ -116,22 +142,20 @@ const stickerObserver = new IntersectionObserver((entries) => {
     if (entry.isIntersecting) {
       setTimeout(() => {
         entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }, i * 80);
+      }, i * 90);
       stickerObserver.unobserve(entry.target);
     }
   });
-}, { threshold: 0.1 });
+}, { threshold: 0.05 });
 
 stickers.forEach(s => {
   s.style.opacity = '0';
-  s.style.transform = 'translateY(28px)';
-  s.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+  s.style.transition = 'opacity 0.5s ease, filter 0.3s ease, transform 0.3s ease';
   stickerObserver.observe(s);
 });
 
 
-/* ─── BRAND ITEM ENTRANCE ─── */
+/* BRAND ENTRANCE */
 const brands = document.querySelectorAll('.brand-item');
 
 const brandObserver = new IntersectionObserver((entries) => {
@@ -148,7 +172,7 @@ const brandObserver = new IntersectionObserver((entries) => {
 
 brands.forEach(b => {
   b.style.opacity = '0';
-  b.style.transform = 'translateY(24px)';
-  b.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.3s ease, border-color 0.3s ease';
+  b.style.transform = 'translateY(20px)';
+  b.style.transition = 'opacity 0.5s ease, transform 0.5s ease, background 0.3s, border-color 0.3s';
   brandObserver.observe(b);
 });
