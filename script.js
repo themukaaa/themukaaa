@@ -1,6 +1,6 @@
-/* THEMUKAAA.COM - Script v3 */
+/* THEMUKAAA.COM - Script v4 */
 
-/* TOPOGRAPHIC LINE BACKGROUND - sparse lines on black */
+/* TOPOGRAPHIC LINE BACKGROUND */
 (function () {
   const canvas = document.getElementById('bgCanvas');
   const ctx = canvas.getContext('2d');
@@ -20,20 +20,11 @@
     );
   }
 
-  /* Only a few iso levels = sparse lines */
   const LEVELS = [-0.6, -0.1, 0.4, 0.9];
-
-  const LINE_COLORS = [
-    '#E8241A',
-    '#1A4CE8',
-    '#F5C800',
-    '#2ECC40',
-  ];
-
+  const LINE_COLORS = ['#E8241A', '#1A4CE8', '#F5C800', '#2ECC40'];
   const STEP = 10;
 
   function draw() {
-    /* Black background each frame */
     ctx.fillStyle = '#080808';
     ctx.fillRect(0, 0, W, H);
 
@@ -62,24 +53,19 @@
           const v10 = grid[r][c + 1];
           const v01 = grid[r + 1][c];
           const v11 = grid[r + 1][c + 1];
-
           const pts = [];
 
           if ((v00 < level) !== (v10 < level)) {
-            const f = (level - v00) / (v10 - v00);
-            pts.push([x + f * STEP, y]);
+            pts.push([x + ((level - v00) / (v10 - v00)) * STEP, y]);
           }
           if ((v10 < level) !== (v11 < level)) {
-            const f = (level - v10) / (v11 - v10);
-            pts.push([x + STEP, y + f * STEP]);
+            pts.push([x + STEP, y + ((level - v10) / (v11 - v10)) * STEP]);
           }
           if ((v01 < level) !== (v11 < level)) {
-            const f = (level - v01) / (v11 - v01);
-            pts.push([x + f * STEP, y + STEP]);
+            pts.push([x + ((level - v01) / (v11 - v01)) * STEP, y + STEP]);
           }
           if ((v00 < level) !== (v01 < level)) {
-            const f = (level - v00) / (v01 - v00);
-            pts.push([x, y + f * STEP]);
+            pts.push([x, y + ((level - v00) / (v01 - v00)) * STEP]);
           }
 
           if (pts.length === 2) {
@@ -102,48 +88,16 @@
 })();
 
 
-/* MODAL SYSTEM */
-const overlay = document.getElementById('modalOverlay');
-
-function openModal(id) {
-  const modal = document.getElementById('modal-' + id);
-  if (!modal) return;
-  modal.classList.add('active');
-  overlay.classList.add('active');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeAllModals() {
-  document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
-  overlay.classList.remove('active');
-  document.body.style.overflow = '';
-}
-
-document.querySelectorAll('.sticker-item[data-modal]').forEach(item => {
-  item.addEventListener('click', () => openModal(item.dataset.modal));
-});
-
-document.querySelectorAll('.modal-close').forEach(btn => {
-  btn.addEventListener('click', closeAllModals);
-});
-
-overlay.addEventListener('click', closeAllModals);
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeAllModals();
-});
-
-
-/* STICKER ENTRANCE */
+/* STICKER ENTRANCE ANIMATION */
 const stickers = document.querySelectorAll('.sticker-item');
 
-const stickerObserver = new IntersectionObserver((entries) => {
+const observer = new IntersectionObserver((entries) => {
   entries.forEach((entry, i) => {
     if (entry.isIntersecting) {
       setTimeout(() => {
         entry.target.style.opacity = '1';
       }, i * 90);
-      stickerObserver.unobserve(entry.target);
+      observer.unobserve(entry.target);
     }
   });
 }, { threshold: 0.05 });
@@ -151,7 +105,7 @@ const stickerObserver = new IntersectionObserver((entries) => {
 stickers.forEach(s => {
   s.style.opacity = '0';
   s.style.transition = 'opacity 0.5s ease, filter 0.3s ease, transform 0.3s ease';
-  stickerObserver.observe(s);
+  observer.observe(s);
 });
 
 
