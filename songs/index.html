@@ -3,25 +3,289 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Themukaaa — My Fav Songs</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Themukaaa - My Fav Artists</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Caveat:wght@500;700&family=DM+Sans:wght@300;400;500&family=Swanky+and+Moo+Moo&display=swap" rel="stylesheet" />
+  <style>
+    .songs-hero {
+      position: relative;
+      z-index: 1;
+      padding: 110px 28px 40px;
+      text-align: center;
+    }
+
+    .songs-title {
+      font-size: clamp(3rem, 10vw, 6rem);
+      line-height: 0.95;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .songs-title .my {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-style: italic;
+      color: #ffffff;
+    }
+
+    .songs-title .rest {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .songs-intro {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: rgba(255,255,255,0.75);
+      max-width: 540px;
+      margin: 0 auto 6px;
+      line-height: 1.6;
+    }
+
+    .songs-sub {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+      color: rgba(255,255,255,0.4);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .note-deco {
+      position: fixed;
+      pointer-events: none;
+      z-index: 1;
+      animation: floatShape linear infinite;
+      opacity: 0.9;
+    }
+
+    .artists-list {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 20px 20px 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .artist-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 14px 18px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.3s, transform 0.3s, border-color 0.3s;
+    }
+
+    .artist-card:hover {
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+
+    .artist-rank {
+      flex-shrink: 0;
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+    }
+
+    .artist-photo {
+      flex-shrink: 0;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255,255,255,0.15);
+    }
+
+    .artist-info {
+      flex: 1;
+    }
+
+    .artist-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 3px;
+    }
+
+    .artist-song {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.55);
+    }
+
+    .artist-globe {
+      flex-shrink: 0;
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      opacity: 0.6;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+
+    .artist-card:hover .artist-globe {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    .outro-text {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 8px 20px 80px;
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      color: rgba(255,255,255,0.85);
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
 </head>
 <body>
   <canvas id="bgCanvas"></canvas>
+
+  <!-- Floating music notes -->
+  <img src="/assets/stickers/note-red-0.png"  class="note-deco" style="top:8%;left:4%;width:55px;animation-delay:0s;animation-duration:7s" alt="" />
+  <img src="/assets/stickers/note-pink-1.png"  class="note-deco" style="top:6%;right:10%;width:48px;animation-delay:1.5s;animation-duration:9s" alt="" />
+  <img src="/assets/stickers/note-red-1.png"   class="note-deco" style="top:20%;right:4%;width:42px;animation-delay:0.8s;animation-duration:8s" alt="" />
+  <img src="/assets/stickers/note-blue-2.png"  class="note-deco" style="top:38%;left:2%;width:50px;animation-delay:2s;animation-duration:11s" alt="" />
+  <img src="/assets/stickers/note-pink-2.png"  class="note-deco" style="top:55%;right:3%;width:44px;animation-delay:0.4s;animation-duration:10s" alt="" />
+  <img src="/assets/stickers/note-red-2.png"   class="note-deco" style="top:70%;left:3%;width:46px;animation-delay:1.2s;animation-duration:8s" alt="" />
+  <img src="/assets/stickers/note-blue-1.png"   class="note-deco" style="top:85%;right:5%;width:38px;animation-delay:3s;animation-duration:12s" alt="" />
+
+  <!-- Navbar -->
   <nav class="navbar">
-    <a href="/" class="nav-name" style="text-decoration:none">← Themuka</a>
-    <span class="nav-est">My Fav Songs</span>
+    <a href="/" class="nav-name" style="text-decoration:none">Themuka&#8482;</a>
+    <span class="nav-est">Est · 2026</span>
   </nav>
-  <section class="page-content">
-    <h1 class="page-title">My Fav Songs</h1>
-    <ul class="music-list">
-      <li>🎵 ✏️ Song 1 — Artist</li>
-      <li>🎵 ✏️ Song 2 — Artist</li>
-      <li>🎵 ✏️ Song 3 — Artist</li>
-      <li>🎵 ✏️ Song 4 — Artist</li>
-    </ul>
-  </section>
-  <script src="script.js"></script>
+
+  <!-- Hero -->
+  <div class="songs-hero">
+    <h1 class="songs-title">
+      <span class="my">My </span><span class="rest">Fav Artists</span>
+    </h1>
+    <p class="songs-intro">I'm pretty picky with what I listen to. These are the 10 artists that actually make the cut enjoy!</p>
+    <p class="songs-sub">(I also included my favourite song by each one)</p>
+  </div>
+
+  <!-- Artists list -->
+  <div class="artists-list">
+
+    <a class="artist-card" href="https://www.lanadelrey.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-1.png" class="artist-rank" alt="1" />
+      <img src="/assets/photos/lana-del-rey.svg" class="artist-photo" alt="Lana Del Rey" />
+      <div class="artist-info">
+        <p class="artist-name">Lana Del Rey</p>
+        <p class="artist-song">Fav song — Dark Paradise</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.onrpt.store/collections/isabel-larosa" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-2.png" class="artist-rank" alt="2" />
+      <img src="/assets/photos/isabel-larosa.svg" class="artist-photo" alt="Isabel LaRosa" />
+      <div class="artist-info">
+        <p class="artist-name">Isabel LaRosa</p>
+        <p class="artist-song">Fav song — Muse</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.ladygaga.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-3.png" class="artist-rank" alt="3" />
+      <img src="/assets/photos/lady-gaga.svg" class="artist-photo" alt="Lady Gaga" />
+      <div class="artist-info">
+        <p class="artist-name">Lady Gaga</p>
+        <p class="artist-song">Fav song — Heavy Metal Lover</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.katyperry.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-4.png" class="artist-rank" alt="4" />
+      <img src="/assets/photos/katy-perry.svg" class="artist-photo" alt="Katy Perry" />
+      <div class="artist-info">
+        <p class="artist-name">Katy Perry</p>
+        <p class="artist-song">Fav song — Legendary Lovers</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.aurora-music.com/" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-5.png" class="artist-rank" alt="5" />
+      <img src="/assets/photos/aurora.svg" class="artist-photo" alt="Aurora" />
+      <div class="artist-info">
+        <p class="artist-name">Aurora</p>
+        <p class="artist-song">Fav song — Running with the Wolves</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.kesha.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-6.png" class="artist-rank" alt="6" />
+      <img src="/assets/photos/kesha.svg" class="artist-photo" alt="Kesha" />
+      <div class="artist-info">
+        <p class="artist-name">Kesha</p>
+        <p class="artist-song">Fav song — Backstabber</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.thenbhd.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-7.png" class="artist-rank" alt="7" />
+      <img src="/assets/photos/the-neighbourhood.svg" class="artist-photo" alt="The Neighbourhood" />
+      <div class="artist-info">
+        <p class="artist-name">The Neighbourhood</p>
+        <p class="artist-song">Fav song — Softcore</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.conangray.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-8.png" class="artist-rank" alt="8" />
+      <img src="/assets/photos/conan-gray.svg" class="artist-photo" alt="Conan Gray" />
+      <div class="artist-info">
+        <p class="artist-name">Conan Gray</p>
+        <p class="artist-song">Fav song — Family Line</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://www.radiohead.com" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-9.png" class="artist-rank" alt="9" />
+      <img src="/assets/photos/radiohead.svg" class="artist-photo" alt="Radiohead" />
+      <div class="artist-info">
+        <p class="artist-name">Radiohead</p>
+        <p class="artist-song">Fav song — Let Down</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+    <a class="artist-card" href="https://ghost-official.com/" target="_blank" rel="noopener">
+      <img src="/assets/stickers/ranking-10.png" class="artist-rank" alt="10" />
+      <img src="/assets/photos/ghost.svg" class="artist-photo" alt="Ghost" />
+      <div class="artist-info">
+        <p class="artist-name">Ghost</p>
+        <p class="artist-song">Fav song — Darkness at the Heart of My Love</p>
+      </div>
+      <img src="/assets/stickers/web-globe.png" class="artist-globe" alt="Visit website" />
+    </a>
+
+  </div>
+
+  <p class="outro-text">My taste evolves, so if I find a new favourite, I'll be sure to update this list xaxa</p>
+
+  <script src="/script.js"></script>
 </body>
 </html>
