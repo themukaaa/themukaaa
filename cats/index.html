@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Themukaaa — World of Cats</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+  <link rel="stylesheet" href="/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Caveat:wght@500;700&family=DM+Sans:wght@300;400;500&family=Swanky+and+Moo+Moo&display=swap" rel="stylesheet" />
+  <style>
+
+    /* HERO */
+    .cats-hero {
+      position: relative;
+      z-index: 2;
+      padding: 110px 28px 30px;
+      text-align: center;
+    }
+
+    .cats-title {
+      font-size: clamp(2.6rem, 9vw, 5.5rem);
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 18px;
+    }
+
+    .cats-title .word-world {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .cats-title .word-of {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: 0.8em;
+      color: #ffffff;
+    }
+
+    .cats-title .word-cats {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-style: italic;
+      color: #ffffff;
+    }
+
+    .cats-hero p {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(1rem, 3vw, 1.4rem);
+      color: rgba(255,255,255,0.8);
+      max-width: 540px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+
+    .cats-tap-hint {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(0.95rem, 2.8vw, 1.2rem);
+      color: #ffffff;
+      margin-top: 10px;
+    }
+
+    /* CAT SCATTER FIELD */
+    .cats-field {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      min-height: 900px;
+      padding: 20px 0;
+    }
+
+    .cat-item {
+      position: absolute;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .cat-img {
+      width: 110px;
+      height: 110px;
+      object-fit: contain;
+      filter: drop-shadow(0 5px 14px rgba(0,0,0,0.6));
+      transition: transform 0.3s ease;
+    }
+
+    .cat-item.active .cat-img,
+    .cat-item:hover .cat-img {
+      transform: scale(1.08) translateY(-3px);
+    }
+
+    .cat-bubble {
+      position: absolute;
+      bottom: 115%;
+      left: 50%;
+      transform: translateX(-50%) translateY(6px);
+      width: 230px;
+      background: #161616;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 16px;
+      padding: 14px 16px;
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.45;
+      text-align: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .cat-item.active .cat-bubble {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .cat-bubble::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 8px solid transparent;
+      border-top-color: #161616;
+    }
+
+    .bubble-label {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #F5C800;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* WHERE CATS COME FIRST */
+    .charity-section {
+      position: relative;
+      z-index: 2;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 40px 20px 100px;
+      text-align: center;
+    }
+
+    .charity-heading {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(1.8rem, 6vw, 2.8rem);
+      color: #ffffff;
+      margin-bottom: 32px;
+    }
+
+
+    .charity-intro {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: clamp(1rem, 2.8vw, 1.25rem);
+      color: #ffffff;
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+    }
+
+    .charity-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .charity-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      padding: 24px 22px;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.3s, border-color 0.3s;
+    }
+
+    .charity-logo {
+      width: 64px;
+      height: 64px;
+      object-fit: contain;
+      margin-bottom: 14px;
+    }
+
+    .charity-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.2);
+      transform: translateY(-3px);
+    }
+
+    .charity-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 10px;
+    }
+
+    .charity-desc {
+      font-family: 'Swanky and Moo Moo', cursive;
+      font-size: 1rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.6;
+      text-align: center;
+    }
+
+  </style>
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="/" class="nav-name" style="text-decoration:none">Themuka&#8482;</a>
+    <span class="nav-est">Est · 2026</span>
+  </nav>
+
+  <!-- Hero -->
+  <div class="cats-hero">
+    <h1 class="cats-title">
+      <span class="word-world">World </span><span class="word-of">of </span><span class="word-cats">Cats</span>
+    </h1>
+    <p>Did you know? Cats are the actual owners of humans and the entire planet Earth. Did you know? No? Well... now you know! Xaxaxa.</p>
+    <p class="cats-tap-hint">(Tap a cat to hear what they have to say)</p>
+  </div>
+
+  <!-- Scattered cat stickers with fun facts -->
+  <div class="cats-field" id="catsField">
+
+    <div class="cat-item" style="top:2%;left:8%">
+      <img src="/assets/stickers/cat-1.png" class="cat-img" alt="Cat 1" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        Did you know that all orange cats are crazy? Xaxax
+      </div>
+    </div>
+
+    <div class="cat-item" style="top:8%;right:6%">
+      <img src="/assets/stickers/cat-2.png" class="cat-img" alt="Cat 2" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        If I look at you and slowly blink, I'm basically saying "I love you" and "I trust you." It's the highest compliment a cat can give!
+      </div>
+    </div>
+
+    <div class="cat-item" style="top:26%;left:30%">
+      <img src="/assets/stickers/cat-3.png" class="cat-img" alt="Cat 3" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        Did you know my whiskers are as wide as my body? They help me calculate if I can fit through that tiny hole — spoiler: I usually can.
+      </div>
+    </div>
+
+    <div class="cat-item" style="top:24%;right:3%">
+      <img src="/assets/stickers/cat-4.png" class="cat-img" alt="Cat 4" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        Just like your fingerprints, my nose print is 100% unique. No other cat in the world has a nose pattern like mine.
+      </div>
+    </div>
+
+    <div class="cat-item" style="top:48%;left:5%">
+      <img src="/assets/stickers/cat-5.png" class="cat-img" alt="Cat 5" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        When my whiskers twitch in my sleep, I'm probably dreaming about catching a giant laser pointer. Don't wake me up, I'm winning!
+      </div>
+    </div>
+
+    <div class="cat-item" style="top:50%;right:8%">
+      <img src="/assets/stickers/cat-6.png" class="cat-img" alt="Cat 6" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        Did you know I have legendary hearing? I can hear you opening a treat bag from three rooms away, but when you call my name... I'm just choosing to ignore you. Xaxaxa.
+      </div>
+    </div>
+
+    <div class="cat-item" style="top:70%;left:32%">
+      <img src="/assets/stickers/cat-7.png" class="cat-img" alt="Cat 7" />
+      <div class="cat-bubble">
+        <span class="bubble-label">Fun Fact</span>
+        Just like your fingerprints, my nose print is 100% unique. No other cat in the world has a nose pattern like mine.
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Where Cats Come First -->
+  <div class="charity-section">
+    <h2 class="charity-heading">Where Cats Come First</h2>
+    <p class="charity-intro">These are two cat protection organisations out of many — just a couple I personally admire for the work they do.</p>
+    <div class="charity-grid">
+
+      <a class="charity-card" href="https://www.ninelivesgreece.com/" target="_blank" rel="noopener">
+        <img src="/assets/photos/nlg.svg" class="charity-logo" alt="Nine Lives Greece" />
+        <p class="charity-name">Nine Lives Greece</p>
+      </a>
+
+      <a class="charity-card" href="https://www.cats.org.uk/" target="_blank" rel="noopener">
+        <img src="/assets/photos/cpuk.svg" class="charity-logo" alt="Cats Protection UK" />
+        <p class="charity-name">Cats Protection (UK)</p>
+      </a>
+
+    </div>
+  </div>
+
+  <script src="/script.js"></script>
+  <script>
+    // Tap to open/close fun fact bubbles - works on mobile and desktop
+    const catItems = document.querySelectorAll('.cat-item');
+
+    catItems.forEach(item => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const wasActive = item.classList.contains('active');
+        catItems.forEach(c => c.classList.remove('active'));
+        if (!wasActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Tap anywhere else closes the open bubble
+    document.addEventListener('click', () => {
+      catItems.forEach(c => c.classList.remove('active'));
+    });
+  </script>
+</body>
+</html>
