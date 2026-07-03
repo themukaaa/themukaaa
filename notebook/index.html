@@ -51,7 +51,7 @@
 
     .notebook-part {
       font-family: 'Swanky and Moo Moo', cursive;
-      font-size: clamp(1.2rem, 4vw, 1.7rem);
+      font-size: clamp(1.45rem, 5vw, 2rem);
       color: rgba(255,255,255,0.85);
       margin-top: 10px;
     }
@@ -126,27 +126,25 @@
     }
 
     .carousel-arrow {
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s;
+      padding: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
-      color: #ffffff;
     }
 
     .carousel-arrow:hover {
-      background: rgba(255,255,255,0.18);
-      transform: scale(1.08);
+      transform: scale(1.12);
     }
 
-    .carousel-arrow svg {
-      width: 18px;
-      height: 18px;
+    .carousel-arrow img {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      filter: drop-shadow(0 3px 8px rgba(0,0,0,0.5));
     }
 
     /* TIPS */
@@ -160,7 +158,7 @@
 
     .tips-heading {
       font-family: 'Swanky and Moo Moo', cursive;
-      font-size: clamp(1.3rem, 4.5vw, 2rem);
+      font-size: clamp(1.5rem, 5vw, 2.4rem);
       text-align: center;
       margin-bottom: 36px;
       line-height: 1.4;
@@ -243,14 +241,10 @@
     <!-- Arrows -->
     <div class="carousel-arrows">
       <button class="carousel-arrow" id="arrowPrev" aria-label="Previous">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="15 18 9 12 15 6"/>
-        </svg>
+        <img src="/assets/stickers/arrow-b.png" alt="Previous" />
       </button>
       <button class="carousel-arrow" id="arrowNext" aria-label="Next">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="9 6 15 12 9 18"/>
-        </svg>
+        <img src="/assets/stickers/arrow-f.png" alt="Next" />
       </button>
     </div>
   </div>
