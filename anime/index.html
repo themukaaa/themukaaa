@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Themukaaa - My Anime List</title>
+  <title>My Anime List</title>
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
   <link rel="stylesheet" href="/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Caveat:wght@500;700&family=DM+Sans:wght@300;400;500&family=Swanky+and+Moo+Moo&display=swap" rel="stylesheet" />
@@ -16,7 +16,6 @@
       animation: floatShape linear infinite;
     }
 
-    /* HERO */
     .anime-hero {
       position: relative;
       z-index: 2;
@@ -59,7 +58,6 @@
       line-height: 1.6;
     }
 
-    /* TOP 10 */
     .section-wrap {
       position: relative;
       z-index: 2;
@@ -126,7 +124,6 @@
       color: rgba(255,255,255,0.4);
     }
 
-    /* STATS */
     .stats-section {
       position: relative;
       z-index: 2;
@@ -178,7 +175,6 @@
       object-fit: contain;
     }
 
-    /* NORTH STAR */
     .northstar-section {
       position: relative;
       z-index: 2;
@@ -241,7 +237,6 @@
 <body>
   <canvas id="bgCanvas"></canvas>
 
-  <!-- Susuwatari floating stickers -->
   <img src="/assets/stickers/susuwatari-1.svg" class="deco-shape" style="top:4%;left:4%;width:65px;animation-delay:0s;animation-duration:7s" alt="" />
   <img src="/assets/stickers/susuwatari-2.svg" class="deco-shape" style="top:5%;right:7%;width:55px;animation-delay:1.5s;animation-duration:9s" alt="" />
   <img src="/assets/stickers/susuwatari-3.svg" class="deco-shape" style="top:22%;right:3%;width:50px;animation-delay:0.8s;animation-duration:8s" alt="" />
@@ -249,13 +244,11 @@
   <img src="/assets/stickers/susuwatari-5.svg" class="deco-shape" style="top:62%;right:3%;width:52px;animation-delay:0.4s;animation-duration:10s" alt="" />
   <img src="/assets/stickers/susuwatari-6.svg" class="deco-shape" style="top:80%;left:3%;width:58px;animation-delay:1.2s;animation-duration:8s" alt="" />
 
-  <!-- Navbar -->
   <nav class="navbar">
     <a href="/" class="nav-name" style="text-decoration:none">Themuka&#8482;</a>
     <span class="nav-est">Est · 2026</span>
   </nav>
 
-  <!-- Hero -->
   <div class="anime-hero">
     <h1 class="anime-title">
       <span class="word-my">My </span><span class="word-anime">Anime </span><span class="word-addiction">Addiction</span>
@@ -263,7 +256,6 @@
     <p>I've seen enough anime to know that I'll never have enough time to see it all but here's my top 10!</p>
   </div>
 
-  <!-- Top 10 -->
   <div class="section-wrap">
     <div class="anime-list">
 
@@ -360,7 +352,6 @@
     </div>
   </div>
 
-  <!-- Stats -->
   <div class="stats-section">
     <h2 class="stats-heading">
       <span class="my">My </span><span class="rest">Stats</span>
@@ -377,7 +368,6 @@
     </div>
   </div>
 
-  <!-- North Star -->
   <div class="northstar-section">
     <h2 class="northstar-heading">My North Star</h2>
     <p class="northstar-quote">If I could live inside their movies, I would. Nothing else quite compares!</p>
